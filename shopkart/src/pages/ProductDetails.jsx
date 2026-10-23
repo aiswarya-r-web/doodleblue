@@ -31,6 +31,7 @@ import {
 import { toast } from 'sonner'
 import { useRequireAuth } from '../hooks/useRequireAuth'
 import { getCardTint } from '../utils/cardTint'
+import { heartBurst } from '../utils/confettiBlast'
 import { formatCurrency } from '../utils/formatCurrency'
 
 // The API returns a single image per product. The remaining gallery slots
@@ -141,11 +142,12 @@ export default function ProductDetails() {
     toast.success(`Added ${quantity} to cart`, { description: product.title })
   }
 
-  const handleWishlist = () => {
+  const handleWishlist = (event) => {
     dispatch(toggleWishlist(product))
     if (wishlisted) {
       toast('Removed from wishlist')
     } else {
+      heartBurst(event.clientX, event.clientY)
       toast.success('Added to wishlist', { description: product.title })
     }
   }

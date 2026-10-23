@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { Toaster } from 'sonner'
+import { CheckCircle2, CircleAlert, Info } from 'lucide-react'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import RequireAuth from './components/RequireAuth'
@@ -47,7 +48,30 @@ export default function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
-      <Toaster position="bottom-center" richColors closeButton />
+      <Toaster
+        position="bottom-center"
+        gap={10}
+        closeButton
+        icons={{
+          success: <CheckCircle2 size={19} />,
+          error: <CircleAlert size={19} />,
+          info: <Info size={19} />,
+          warning: <CircleAlert size={19} />,
+        }}
+        toastOptions={{
+          classNames: {
+            toast: 'sk-toast',
+            success: 'sk-toast-success',
+            error: 'sk-toast-error',
+            info: 'sk-toast-info',
+            warning: 'sk-toast-warning',
+            title: 'sk-toast-title',
+            description: 'sk-toast-desc',
+            icon: 'sk-toast-icon',
+            closeButton: 'sk-toast-close',
+          },
+        }}
+      />
     </>
   )
 }

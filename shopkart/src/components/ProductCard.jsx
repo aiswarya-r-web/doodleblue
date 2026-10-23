@@ -12,6 +12,7 @@ import {
 import { toast } from 'sonner'
 import { useRequireAuth } from '../hooks/useRequireAuth'
 import { getCardTint } from '../utils/cardTint'
+import { heartBurst } from '../utils/confettiBlast'
 import { formatCurrency } from '../utils/formatCurrency'
 import { getFlashSalePercent } from '../utils/flashSale'
 import QuantityStepper from './QuantityStepper'
@@ -35,11 +36,12 @@ export default function ProductCard({ product, salePrice }) {
     toast.success('Added to cart', { description: product.title })
   }
 
-  const handleWishlist = () => {
+  const handleWishlist = (event) => {
     dispatch(toggleWishlist(product))
     if (wishlisted) {
       toast('Removed from wishlist')
     } else {
+      heartBurst(event.clientX, event.clientY)
       toast.success('Added to wishlist', { description: product.title })
     }
   }

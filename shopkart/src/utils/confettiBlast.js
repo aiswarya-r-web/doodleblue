@@ -1,6 +1,25 @@
 import confetti from 'canvas-confetti'
 
 const COLORS = ['#c2410c', '#f59e0b', '#1f6f5a', '#3b82f6', '#ec4899', '#fbe9dd']
+const HEART_COLORS = ['#ec4899', '#f43f5e', '#fb7185', '#fda4af', '#fff1f2']
+
+// Small pop from the clicked heart button (clientX/Y are viewport pixels).
+export function heartBurst(clientX, clientY) {
+  confetti({
+    particleCount: 30,
+    spread: 70,
+    startVelocity: 18,
+    gravity: 0.8,
+    scalar: 0.7,
+    ticks: 90,
+    colors: HEART_COLORS,
+    origin: {
+      x: clientX / window.innerWidth,
+      y: clientY / window.innerHeight,
+    },
+    disableForReducedMotion: true,
+  })
+}
 
 export function celebrateOrder() {
   const fire = (particleRatio, options) =>

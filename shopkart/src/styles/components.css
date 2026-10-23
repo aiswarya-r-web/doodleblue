@@ -49,10 +49,12 @@
   overflow: hidden;
   height: 42px;
   border: 2px solid transparent;
+  color-scheme: light;
 }
 
 .header-search:focus-within {
   border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus);
 }
 
 .header-search input {
@@ -62,8 +64,12 @@
   border: none;
   padding: 0 14px;
   font-size: 14px;
-  color: var(--color-text);
-  background: transparent;
+  color: #1b1f2a;
+  background: #fff;
+}
+
+.header-search input::placeholder {
+  color: #8b91a0;
 }
 
 .header-search input:focus {
@@ -1091,3 +1097,118 @@
 /* --------------------------------- Toast --------------------------------- */
 
 /* Toasts are rendered by sonner — see <Toaster /> in App.jsx. */
+
+.sk-toast {
+  --normal-bg: #fff;
+  --normal-text: var(--color-text);
+  --normal-border: transparent;
+  font-family: var(--font-body);
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  box-shadow:
+    0 14px 34px rgba(27, 31, 42, 0.16),
+    0 2px 6px rgba(27, 31, 42, 0.08);
+  padding: 13px 16px 13px 13px;
+  gap: 12px;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Colored accent bar on the left edge */
+.sk-toast::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-muted);
+}
+
+.sk-toast-success::before {
+  background: var(--color-success);
+}
+
+.sk-toast-error::before {
+  background: var(--color-danger);
+}
+
+.sk-toast-info::before {
+  background: #2563eb;
+}
+
+.sk-toast-warning::before {
+  background: var(--color-star);
+}
+
+.sk-toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #f1f3f7;
+  color: var(--color-muted);
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.sk-toast-success .sk-toast-icon {
+  background: #e6f4ef;
+  color: var(--color-success);
+}
+
+.sk-toast-error .sk-toast-icon {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.sk-toast-info .sk-toast-icon {
+  background: #e8f0fe;
+  color: #2563eb;
+}
+
+.sk-toast-warning .sk-toast-icon {
+  background: var(--color-warning-soft);
+  color: var(--color-star);
+}
+
+.sk-toast-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--color-text);
+}
+
+.sk-toast-desc {
+  font-size: 12.5px;
+  color: var(--color-muted);
+  margin-top: 2px;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.sk-toast-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  transform: none;
+}
+
+.sk-toast-close:hover {
+  background: #f1f3f7;
+  color: var(--color-text);
+}
