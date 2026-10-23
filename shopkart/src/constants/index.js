@@ -18,6 +18,8 @@ export const SORT_OPTIONS = [
 export const FREE_SHIPPING_THRESHOLD = 100
 export const STANDARD_SHIPPING_FEE = 5
 
+export const PAGE_SIZE = 8
+
 // Demo coupons. These are client-side demo offers only — they are NOT
 // provided or validated by the Fake Store API.
 export const DEMO_COUPONS = {
@@ -47,5 +49,5 @@ export const DEMO_BADGES = {
 export const FLASH_SALE = {
   discountPercent: 35,
   category: 'electronics', // fallback: first items in the catalog
-  maxItems: 4,
+  maxItems: 6,
 }

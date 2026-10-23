@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Heart, ShoppingCart, Truck } from 'lucide-react'
-import { DEMO_BADGES, FREE_SHIPPING_THRESHOLD } from '../constants'
+import { Heart, Star } from 'lucide-react'
+import { DEMO_BADGES } from '../constants'
 import { addToCart, decrease, increase } from '../features/cart/cartSlice'
 import { selectCartItemById } from '../features/cart/cartSelectors'
 import {
@@ -11,23 +11,23 @@ import {
 } from '../features/wishlist/wishlistSlice'
 import { toast } from 'sonner'
 import { useRequireAuth } from '../hooks/useRequireAuth'
+import { getCardTint } from '../utils/cardTint'
 import { formatCurrency } from '../utils/formatCurrency'
 import { getFlashSalePercent } from '../utils/flashSale'
 import QuantityStepper from './QuantityStepper'
-import RatingStars from './RatingStars'
 
 export default function ProductCard({ product, salePrice }) {
   const dispatch = useDispatch()
   const cartItem = useSelector((state) => selectCartItemById(state, product.id))
   const wishlisted = useSelector((state) => selectIsWishlisted(state, product.id))
   const requireAuth = useRequireAuth()
+  const tint = getCardTint(product.id)
 
   const flash = salePrice != null
   const displayPrice = flash ? salePrice : product.price
   const onSale = flash || product.price < 50
   const compareAt = flash ? product.price : product.price * 1.25
   const topRated = product.rating?.rate >= 4.5
-  const freeShipping = displayPrice >= FREE_SHIPPING_THRESHOLD / 4
 
   const handleAdd = () => {
     if (!requireAuth()) return
@@ -55,7 +55,7 @@ export default function ProductCard({ product, salePrice }) {
         className="product-card-link"
         aria-label={`View ${product.title}`}
       >
-        <div className="product-media">
+        <div className="product-media" style={{ background: tint }}>
           <div className="card-badges">
             {flash ? (
               <span className="badge badge-sale">
@@ -75,25 +75,13 @@ export default function ProductCard({ product, salePrice }) {
         <div className="product-body">
           <span className="product-category">{product.category}</span>
           <h3 className="product-title">{product.title}</h3>
-          <div className="rating-row">
-            <RatingStars rate={product.rating?.rate ?? 0} />
+          <div className="flash-card-rating">
+            <Star size={14} fill="var(--color-star)" color="var(--color-star)" />
             <span>
-              {product.rating?.rate?.toFixed(1)} ({product.rating?.count ?? 0})
+              {product.rating?.rate?.toFixed(1)} ({product.rating?.count ?? 0}{' '}
+              reviews)
             </span>
           </div>
-          <div className="price-row">
-            <span className="price">{formatCurrency(displayPrice)}</span>
-            {onSale && (
-              <span className="price-compare">
-                {formatCurrency(compareAt)}
-              </span>
-            )}
-          </div>
-          {freeShipping && (
-            <span className="free-ship-tag">
-              <Truck size={14} /> Free shipping
-            </span>
-          )}
         </div>
       </Link>
 
@@ -108,7 +96,13 @@ export default function ProductCard({ product, salePrice }) {
         <Heart size={17} fill={wishlisted ? 'currentColor' : 'none'} />
       </motion.button>
 
-      <div className="card-actions">
+      <div className="flash-card-foot">
+        <div className="flash-card-price">
+          <span className="price">{formatCurrency(displayPrice)}</span>
+          {onSale && (
+            <span className="price-compare">{formatCurrency(compareAt)}</span>
+          )}
+        </div>
         {cartItem ? (
           <QuantityStepper
             value={cartItem.quantity}
@@ -120,10 +114,10 @@ export default function ProductCard({ product, salePrice }) {
         ) : (
           <button
             type="button"
-            className="btn btn-primary btn-block"
+            className="btn btn-primary flash-add"
             onClick={handleAdd}
           >
-            <ShoppingCart size={16} /> Add to Cart
+            Add to cart
           </button>
         )}
       </div>

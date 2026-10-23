@@ -74,8 +74,7 @@ export default function LoginPage() {
 
         {registered && (
           <div className="alert alert-success" role="status" style={{ marginBottom: 16 }}>
-            Account created. Sign in with a seeded demo account below — the
-            demo API does not persist new registrations.
+            Account created. Sign in with your new credentials below.
           </div>
         )}
 
@@ -167,10 +166,12 @@ export default function LoginPage() {
         </p>
 
         <div className="demo-credentials">
-          Demo account (seeded in the Fake Store API):
+          Demo account:
           <br />
-          Email <code>kevin@gmail.com</code> · Password{' '}
-          <code>kev02937@</code>
+          Email <code>aiswarya@gmail.com</code> · Password{' '}
+          <code>Shopkart@123</code>
+          <br />
+          Accounts created on this device work here too.
         </div>
       </div>
     </main>

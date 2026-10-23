@@ -57,6 +57,7 @@
 
 .header-search input {
   flex: 1;
+  min-width: 0;
   height: 100%;
   border: none;
   padding: 0 14px;
@@ -342,6 +343,7 @@
   flex: 1;
   width: 100%;
   height: 100%;
+  padding: 12px;
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
@@ -373,13 +375,14 @@
 
 .product-media {
   position: relative;
-  height: 190px;
+  height: 150px;
   background: #fff;
-  padding: 14px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #f0f2f6;
+  border: 1px solid #f0f2f6;
+  border-radius: 10px;
 }
 
 /* Fixed image box — every product image occupies the same area,
@@ -393,8 +396,7 @@
 
 @media (max-width: 760px) {
   .product-media {
-    height: 150px;
-    padding: 10px;
+    height: 130px;
   }
 }
 
@@ -434,8 +436,8 @@
 
 .card-badges {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 20px;
+  left: 20px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -444,8 +446,8 @@
 
 .wishlist-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -475,7 +477,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 12px 13px 13px;
+  padding: 10px 0 0;
   flex: 1;
 }
 
@@ -519,13 +521,6 @@
   height: 14px;
 }
 
-.price-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-top: 2px;
-}
-
 .price {
   font-family: var(--font-heading);
   font-weight: 800;
@@ -539,32 +534,10 @@
   text-decoration: line-through;
 }
 
-.card-actions {
-  padding: 0 13px 13px;
-  margin-top: auto;
-}
+/* Card footer (price + add-to-cart / stepper) uses the shared
+   .flash-card-foot styles from pages.css. */
 
-/* The in-card quantity stepper takes the same footprint as the
-   Add to Cart button so cards stay visually consistent. */
-.card-actions .stepper {
-  display: flex;
-  width: 100%;
-  height: var(--btn-height);
-}
 
-.card-actions .stepper .stepper-value {
-  flex: 1;
-  min-width: 0;
-}
-
-.free-ship-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-success);
-}
 
 /* ---------------------------- Quantity stepper --------------------------- */
 
@@ -788,6 +761,7 @@
 .breadcrumb .current {
   color: var(--color-text);
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 /* ------------------------------- Order card ------------------------------ */

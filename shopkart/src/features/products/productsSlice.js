@@ -59,6 +59,7 @@ const initialState = {
   searchQuery: '',
   category: 'all',
   sort: 'featured',
+  page: 1,
   lastFetchedAt: null,
 }
 
@@ -68,12 +69,19 @@ const productsSlice = createSlice({
   reducers: {
     setSearchQuery(state, action) {
       state.searchQuery = action.payload ?? ''
+      state.page = 1
     },
     setCategory(state, action) {
       state.category = action.payload || 'all'
+      state.page = 1
     },
     setSort(state, action) {
       state.sort = action.payload || 'featured'
+      state.page = 1
+    },
+    setPage(state, action) {
+      const page = Math.floor(Number(action.payload))
+      if (Number.isFinite(page) && page >= 1) state.page = page
     },
     clearSelected(state) {
       state.selected = { item: null, status: 'idle', error: null }
@@ -110,7 +118,7 @@ const productsSlice = createSlice({
   },
 })
 
-export const { setSearchQuery, setCategory, setSort, clearSelected } =
+export const { setSearchQuery, setCategory, setSort, setPage, clearSelected } =
   productsSlice.actions
 
 export default productsSlice.reducer

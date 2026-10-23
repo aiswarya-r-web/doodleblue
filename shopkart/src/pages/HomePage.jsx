@@ -1,25 +1,30 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 import { Loader2, SearchX } from 'lucide-react'
 import CategoryFilter from '../components/CategoryFilter'
 import { EmptyState, ErrorState } from '../components/ErrorState'
+import FlashSaleBanner from '../components/FlashSaleBanner'
+import FlashSaleCarousel from '../components/FlashSaleCarousel'
 import PageWrapper from '../components/PageWrapper'
+import Pagination from '../components/Pagination'
 import ProductCard from '../components/ProductCard'
 import { ProductGridSkeleton } from '../components/LoadingSkeleton'
-import { SORT_OPTIONS } from '../constants'
+import { PAGE_SIZE, SORT_OPTIONS } from '../constants'
 import {
   fetchProducts,
   setCategory,
+  setPage,
   setSearchQuery,
   setSort,
 } from '../features/products/productsSlice'
+import { selectFlashSaleProducts } from '../utils/flashSale'
 
 export default function HomePage() {
   const dispatch = useDispatch()
-  const { items, status, error, searchQuery, category, sort } = useSelector(
-    (state) => state.products,
-  )
+  const gridRef = useRef(null)
+  const { items, status, error, searchQuery, category, sort, page } =
+    useSelector((state) => state.products)
 
   useEffect(() => {
     if (status === 'idle') dispatch(fetchProducts())
@@ -44,6 +49,20 @@ export default function HomePage() {
     return result
   }, [items, category, searchQuery, sort])
 
+  const flashItems = useMemo(() => selectFlashSaleProducts(items), [items])
+
+  const totalPages = Math.ceil(visibleProducts.length / PAGE_SIZE)
+  const safePage = Math.min(page, totalPages || 1)
+  const pageItems = visibleProducts.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE,
+  )
+
+  const handlePageChange = (next) => {
+    dispatch(setPage(next))
+    gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   const handleClearFilters = () => {
     dispatch(setSearchQuery(''))
     dispatch(setCategory('all'))
@@ -53,11 +72,10 @@ export default function HomePage() {
   return (
     <PageWrapper>
       <div className="container">
+        {status === 'succeeded' && flashItems.length > 0 && <FlashSaleBanner />}
+
         <div className="page-head">
           <h1 className="page-title">Shop products</h1>
-          <p className="page-subtitle">
-            Browse the catalog — data from the Fake Store API.
-          </p>
         </div>
 
         <div className="shop-toolbar">
@@ -115,28 +133,42 @@ export default function HomePage() {
           />
         )}
 
+        {status === 'succeeded' && flashItems.length > 0 && (
+          <FlashSaleCarousel items={flashItems} />
+        )}
+
         {status === 'succeeded' && visibleProducts.length > 0 && (
-          <motion.div
-            className="product-grid"
-            initial="hidden"
-            animate="show"
-            variants={{
-              show: { transition: { staggerChildren: 0.04 } },
-            }}
-          >
-            {visibleProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                variants={{
-                  hidden: { opacity: 0, y: 14 },
-                  show: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-              >
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
-          </motion.div>
+          <div ref={gridRef} style={{ scrollMarginTop: 84 }}>
+            <h2 className="related-title" style={{ marginBottom: 14 }}>
+              Products
+            </h2>
+            <motion.div
+              className="product-grid"
+              initial="hidden"
+              animate="show"
+              variants={{
+                show: { transition: { staggerChildren: 0.04 } },
+              }}
+            >
+              {pageItems.map((product) => (
+                <motion.div
+                  key={product.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </motion.div>
+            <Pagination
+              page={safePage}
+              totalPages={totalPages}
+              onChange={handlePageChange}
+            />
+          </div>
         )}
       </div>
     </PageWrapper>

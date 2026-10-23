@@ -30,12 +30,14 @@ import {
 } from '../features/wishlist/wishlistSlice'
 import { toast } from 'sonner'
 import { useRequireAuth } from '../hooks/useRequireAuth'
+import { getCardTint } from '../utils/cardTint'
 import { formatCurrency } from '../utils/formatCurrency'
 
 // The API returns a single image per product. The remaining gallery slots
 // are honest placeholders rather than fabricated extra photos.
 function Gallery({ product }) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const tint = getCardTint(product.id)
   const thumbs = [
     { type: 'image', src: product.image },
     { type: 'placeholder' },
@@ -45,7 +47,7 @@ function Gallery({ product }) {
 
   return (
     <div className="pdp-gallery">
-      <div className="pdp-main-image">
+      <div className="pdp-main-image" style={{ background: tint }}>
         <AnimatePresence mode="wait">
           <motion.img
             key={activeIndex}

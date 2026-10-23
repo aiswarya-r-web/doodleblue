@@ -83,7 +83,7 @@ export default function SignupPage() {
         </span>
         <h1>Create account</h1>
         <p className="auth-sub">
-          Demo registration — the Fake Store API does not persist new users.
+          Demo registration — your account is stored securely on this device.
         </p>
 
         {authError && (

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,6 +19,7 @@ import {
 } from '../features/cart/cartSelectors'
 import { addOrder } from '../features/orders/ordersSlice'
 import { selectAuthUser } from '../features/auth/authSlice'
+import { celebrateOrder } from '../utils/confettiBlast'
 import { formatCurrency } from '../utils/formatCurrency'
 import { checkoutSchema } from '../validation/schemas'
 
@@ -109,6 +110,10 @@ export default function CheckoutPage() {
   const couponCode = useSelector(selectCouponCode)
   const user = useSelector(selectAuthUser)
   const [placedOrder, setPlacedOrder] = useState(null)
+
+  useEffect(() => {
+    if (placedOrder) celebrateOrder()
+  }, [placedOrder])
 
   const {
     register,
@@ -205,9 +210,7 @@ export default function CheckoutPage() {
       <div className="container">
         <div className="page-head">
           <h1 className="page-title">Checkout</h1>
-          <p className="page-subtitle">
-            Demo checkout — no real payment is collected or processed.
-          </p>
+         
         </div>
 
         <div className="checkout-layout">

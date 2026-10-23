@@ -51,7 +51,6 @@ export default function Footer() {
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} Shopkart</span>
-        <span>Demo coupons, badges and checkout — no real payments.</span>
       </div>
     </footer>
   )
